@@ -1,7 +1,7 @@
 "use strict";
 
-const MODEL_URL = "model/model.json?v=7";
-const INPUT_SIZE = 64;
+const MODEL_URL = "model/model.json?v=8";
+const INPUT_SIZE = 150;
 const CLASSES = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const PREDICTION_INTERVAL_MS = 180;
 const HISTORY_SIZE = 8;
@@ -155,16 +155,13 @@ async function loadComponents() {
 
 async function startCamera() {
   ui.cameraButton.disabled = true;
-  setVisualState("loading", "Cargando componentes de inteligencia artificial.");
+  setVisualState("loading", "Activando la camara...");
 
   try {
-    if (!app.modelReady || !app.opencvReady) {
-      await loadComponents();
-    }
-
+    // 1) Pedir la camara PRIMERO, dentro del gesto del usuario (los navegadores moviles lo exigen)
     app.cameraStream = await navigator.mediaDevices.getUserMedia({
       video: {
-        facingMode: "user",
+        facingMode: { ideal: "environment" },
         width: { ideal: 960 },
         height: { ideal: 720 }
       },
@@ -174,10 +171,16 @@ async function startCamera() {
     ui.video.srcObject = app.cameraStream;
     await ui.video.play();
     app.cameraReady = true;
+    console.info("camara iniciada");
+    setVisualState("loading", "Camara lista. Cargando el modelo...");
+
+    // 2) Cargar modelo + OpenCV despues (no bloquea que se vea la camara)
+    if (!app.modelReady || !app.opencvReady) {
+      await ensureComponents();
+    }
+
     ui.detectButton.disabled = false;
     ui.autoStatus.textContent = "Deteccion automatica: activa";
-    console.info("camara iniciada");
-
     setVisualState("unstable", "Muestra un numero dentro del recuadro.");
     startPredictionLoop();
   } catch (error) {
@@ -654,7 +657,16 @@ ui.clearButton.addEventListener("click", resetCalculator);
 window.__signApp = app;
 window.loadComponents = loadComponents;
 
+// Carga el modelo/OpenCV una sola vez: si ya empezo, reusa la misma promesa
+// (evita bajar los 85 MB dos veces al tocar el boton antes de que termine la carga inicial).
+function ensureComponents() {
+  if (!app.componentsPromise) {
+    app.componentsPromise = loadComponents();
+  }
+  return app.componentsPromise;
+}
+
 initProbabilityRows();
 setVisualState("idle", "Esperando acceso a la camara.");
 updateCalculatorButtons();
-loadComponents().catch((error) => console.error(error));
+ensureComponents().catch((error) => console.error(error));
