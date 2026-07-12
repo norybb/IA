@@ -1,0 +1,412 @@
+:root {
+  --bg: #eef1f7;
+  --card: #ffffff;
+  --ink: #242424;
+  --muted: #5f6470;
+  --soft: #f4f6f9;
+  --line: #e4e8ef;
+  --blue: #5167ff;
+  --green: #16a34a;
+  --red: #d94141;
+  --yellow: #caa400;
+  --orange: #e07a20;
+  --purple: #7c4dff;
+  --state: var(--green);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+.app-card {
+  width: min(760px, calc(100% - 28px));
+  max-height: none;
+  margin: 24px auto;
+  padding: 26px 28px 34px;
+  overflow: hidden;
+  background: var(--card);
+  border-top: 10px solid var(--green);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(30, 40, 70, 0.12);
+}
+
+.hero {
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.55rem, 4vw, 2rem);
+  line-height: 1.12;
+}
+
+.hero p,
+.auto-status,
+.result-panel p,
+.calculator-panel p,
+.debug-panel p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.component-status {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 14px 0 12px;
+  color: #4a4a4a;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.component-status .ready {
+  color: var(--green);
+}
+
+.component-status .error {
+  color: var(--red);
+}
+
+.message-pill {
+  --state: var(--green);
+  width: min(520px, 100%);
+  min-height: 40px;
+  margin: 0 auto 18px;
+  padding: 9px 14px;
+  display: grid;
+  place-items: center;
+  color: #344054;
+  background: #eef1f5;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+.camera-stage {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.video-box {
+  --state: var(--green);
+  position: relative;
+  width: min(460px, 100%);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #111827;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.guide-box {
+  position: absolute;
+  left: 14%;
+  top: 14%;
+  width: 72%;
+  height: 72%;
+  border: 5px solid var(--yellow);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.processed-badge {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 114px;
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+  color: #fff;
+  background: rgba(20, 25, 38, 0.9);
+  border: 3px solid #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.processed-badge strong {
+  line-height: 1;
+  font-size: 1.05rem;
+}
+
+#processedCanvas {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  background: #fff;
+  border-radius: 3px;
+  image-rendering: pixelated;
+}
+
+.camera-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.primary-button,
+.calc-button,
+.dark-button,
+.muted-button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.primary-button,
+.calc-button {
+  color: #fff;
+  background: var(--blue);
+}
+
+.primary-button {
+  padding: 0 18px;
+  font-size: 1rem;
+}
+
+.dark-button {
+  min-width: 186px;
+  padding: 0 18px;
+  color: #fff;
+  background: #111827;
+}
+
+.muted-button {
+  min-width: 90px;
+  color: #fff;
+  background: #718096;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.auto-status {
+  font-weight: 800;
+}
+
+.result-panel,
+.calculator-panel,
+.debug-panel {
+  margin-top: 18px;
+  padding: 16px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.result-panel strong {
+  display: block;
+  margin: 4px 0;
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.result-panel span,
+.result-panel b {
+  display: block;
+}
+
+.result-panel b {
+  margin-top: 6px;
+  color: var(--green);
+}
+
+.calculator-panel h2 {
+  margin: 0 0 6px;
+  color: #475569;
+  font-size: 1.1rem;
+}
+
+.calculator-panel > strong {
+  display: block;
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.calculator-buttons {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+  gap: 8px;
+}
+
+.calc-button {
+  min-width: 68px;
+}
+
+.debug-panel {
+  text-align: left;
+}
+
+.debug-panel summary {
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.debug-grid {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.probability-list {
+  display: grid;
+  gap: 8px;
+}
+
+.probability-row {
+  display: grid;
+  grid-template-columns: 24px 1fr 58px;
+  align-items: center;
+  gap: 10px;
+}
+
+.probability-track {
+  height: 12px;
+  overflow: hidden;
+  background: #dfe3ea;
+  border-radius: 999px;
+}
+
+.probability-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--blue);
+  border-radius: inherit;
+  transition: width 120ms linear;
+}
+
+.reference-panel {
+  margin: 18px auto 0;
+  width: min(100%, 860px);
+  padding: 14px 16px 18px;
+  background: #f7f8fb;
+  border-radius: 14px;
+}
+
+.reference-panel summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.reference-grid figure {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  color: #1f2937;
+  font-weight: 900;
+}
+
+.reference-grid img {
+  width: 100%;
+  max-width: 96px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #dfe3ea;
+  background: white;
+}
+
+.state-idle {
+  --state: #8a94a6;
+}
+
+.state-loading {
+  --state: var(--blue);
+}
+
+.state-error {
+  --state: var(--red);
+}
+
+.state-warning {
+  --state: var(--orange);
+}
+
+.state-unstable {
+  --state: var(--yellow);
+}
+
+.state-success {
+  --state: var(--green);
+}
+
+.state-saved {
+  --state: var(--purple);
+}
+
+.hidden-canvas {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 680px) {
+  .app-card {
+    width: min(100% - 16px, 760px);
+    margin: 8px auto;
+    padding: 18px 12px 24px;
+    border-radius: 14px;
+  }
+
+  .component-status {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .calculator-buttons {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dark-button {
+    grid-column: span 3;
+  }
+
+  .debug-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reference-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

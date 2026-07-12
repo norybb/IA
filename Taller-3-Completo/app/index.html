@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practica de digitos en lenguaje de se&ntilde;as</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css?v=5">
+    <script src="vendor/tf.min.js?v=2"></script>
+    <script async src="vendor/opencv.js?v=2" onload="window.__opencvScriptLoaded = true;"></script>
+  </head>
+  <body>
+    <main class="app-card">
+      <header class="hero">
+        <h1>Practica de digitos en lenguaje de se&ntilde;as</h1>
+        <p>Activa la camara y muestra un numero dentro del recuadro.</p>
+        <div class="component-status" aria-live="polite" style="display:none">
+          <span id="modelStatus">Modelo: cargando</span>
+          <span id="cvStatus">OpenCV: cargando</span>
+        </div>
+        <div id="statusCard" class="message-pill state-idle" style="display:none">
+          <span id="statusMessage">Esperando acceso a la camara.</span>
+        </div>
+      </header>
+
+      <section class="camera-stage">
+        <div id="cameraFrame" class="video-box state-idle">
+          <video id="video" autoplay playsinline muted></video>
+          <div class="guide-box" aria-hidden="true"></div>
+        </div>
+
+        <div class="camera-controls">
+          <button id="cameraButton" class="primary-button" type="button">Activar camara</button>
+          <button id="detectButton" class="primary-button" type="button" disabled>Detectar ahora</button>
+        </div>
+        <p id="autoStatus" class="auto-status" style="display:none">Deteccion automatica: inactiva</p>
+      </section>
+
+      <section class="result-panel">
+        <p>Digito detectado:</p>
+        <strong id="currentPrediction">--</strong>
+        <span id="currentConfidence" style="display:none">Confianza: --</span>
+        <b id="confirmedConfidence" style="display:none">Sin confirmacion estable.</b>
+      </section>
+
+      <section class="calculator-panel">
+        <h2>Calculadora</h2>
+        <strong id="operationDisplay">0</strong>
+        <p id="calculatorHint">Usa el digito detectado o limpia la operacion.</p>
+        <div class="calculator-buttons" aria-label="Controles de calculadora">
+          <button id="useDigitButton" class="dark-button" type="button" disabled>Usar digito</button>
+          <button class="calc-button" data-operator="+" type="button" disabled>+</button>
+          <button class="calc-button" data-operator="-" type="button" disabled>-</button>
+          <button class="calc-button" data-operator="*" type="button" disabled>x</button>
+          <button class="calc-button" data-operator="/" type="button" disabled>/</button>
+          <button id="equalsButton" class="calc-button" type="button" disabled>=</button>
+          <button id="clearButton" class="muted-button" type="button">C</button>
+        </div>
+      </section>
+
+      <details class="debug-panel" hidden>
+        <summary>Ver imagen enviada al modelo y probabilidades</summary>
+        <div class="debug-grid">
+          <div>
+            <b>Procesamiento:</b>
+            <p id="processingSummary">Esperando camara.</p>
+          </div>
+          <div id="probabilityList" class="probability-list"></div>
+        </div>
+      </details>
+
+      <details class="reference-panel">
+        <summary>Ver ejemplos reales del dataset</summary>
+        <div class="reference-grid">
+          <figure><img src="../Dataset-Combinado/0/IMG_1118.JPG" alt="Referencia 0"><figcaption>0</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/1/IMG_1119.JPG" alt="Referencia 1"><figcaption>1</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/2/IMG_1120.JPG" alt="Referencia 2"><figcaption>2</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/3/IMG_1121.JPG" alt="Referencia 3"><figcaption>3</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/4/IMG_1122.JPG" alt="Referencia 4"><figcaption>4</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/5/IMG_1123.JPG" alt="Referencia 5"><figcaption>5</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/6/IMG_1124.JPG" alt="Referencia 6"><figcaption>6</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/7/IMG_1125.JPG" alt="Referencia 7"><figcaption>7</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/8/IMG_1126.JPG" alt="Referencia 8"><figcaption>8</figcaption></figure>
+          <figure><img src="../Dataset-Combinado/9/IMG_1127.JPG" alt="Referencia 9"><figcaption>9</figcaption></figure>
+        </div>
+      </details>
+    </main>
+
+    <canvas id="captureCanvas" class="hidden-canvas"></canvas>
+    <!-- canvas que el modelo usa como entrada; oculto pero funcional -->
+    <canvas id="processedCanvas" width="64" height="64" class="hidden-canvas"></canvas>
+    <script src="app.js?v=7"></script>
+  </body>
+</html>
